@@ -1,6 +1,6 @@
 from numpy import *
 
-mata=ones((3,4))
+mata=ones((3,4))  #eye zeros
 print(mata)
 print(mata.shape[0])
 print(shape(mata))
