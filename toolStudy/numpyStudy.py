@@ -10,3 +10,7 @@ print(matb)
 print(mata-matb)
 
 print(mata/(mata-matb)) #对应列相除
+
+print(range(5))   #range(start, stop[, step])
+for i in range(32):
+    print(i)

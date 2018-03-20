@@ -41,20 +41,6 @@ def classify0(inX, dataSet, labels, k):
     # -----------实现 classify0() 方法的第一种方式----------------------------------------------------------------------------------------------------------------------------
     # 1. 距离计算
     dataSetSize = dataSet.shape[0]
-    # tile生成和训练样本对应的矩阵，并与训练样本求差
-    """
-    tile: 列-3表示复制的行数， 行-1／2表示对inx的重复的次数
-    In [8]: tile(inx, (3, 1))
-    Out[8]:
-    array([[1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3]])
-    In [9]: tile(inx, (3, 2))
-    Out[9]:
-    array([[1, 2, 3, 1, 2, 3],
-        [1, 2, 3, 1, 2, 3],
-        [1, 2, 3, 1, 2, 3]])
-    """
     diffMat = tile(inX, (dataSetSize, 1)) - dataSet
     """
     欧氏距离： 点到点之间的距离
@@ -173,6 +159,46 @@ def classifyPerson():
     inArr = array([ffMiles, percentTats, iceCream])
     classifierResult = classify0((inArr-minVals)/ranges,normMat,datingLabels, 3)
     print ("You will probably like this person: ", resultList[classifierResult - 1])
+
+def img2vector(filename):
+    returnVect = zeros((1,1024))
+    fr = open(filename)
+    for i in range(32):
+        lineStr = fr.readline()
+        for j in range(32):
+            returnVect[0,32*i+j] = int(lineStr[j])
+    return returnVect
+
+def handwritingClassTest():
+    # 1. 导入训练数据
+    hwLabels = []
+    trainingFileList = listdir('trainingDigits')  # load the training set
+    m = len(trainingFileList)
+    trainingMat = zeros((m, 1024))
+    # hwLabels存储0～9对应的index位置， trainingMat存放的每个位置对应的图片向量
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]  # take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        # 将 32*32的矩阵->1*1024的矩阵
+        trainingMat[i, :] = img2vector('trainingDigits/%s' % fileNameStr)
+
+    # 2. 导入测试数据
+    testFileList = listdir('testDigits')  # iterate through the test set
+    errorCount = 0.0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]  # take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector('testDigits/%s' % fileNameStr)
+        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+        print ("the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr))
+        if (classifierResult != classNumStr): errorCount += 1.0
+    print ("\nthe total number of errors is: %d" % errorCount)
+    print ("\nthe total error rate is: %f" % (errorCount / float(mTest)))
+
 # import matplotlib
 # import matplotlib.pyplot as plt
 # fig = plt.figure()
@@ -183,4 +209,7 @@ def classifyPerson():
 # normDataSet, ranges, minVals=autoNorm(datingDataMat);
 # print(ranges)
 # datingClassTest()
-classifyPerson()
+#classifyPerson()
+# testVector = img2vector('testDigits/0_13.txt')
+# print(testVector[0,0:32])
+handwritingClassTest()
