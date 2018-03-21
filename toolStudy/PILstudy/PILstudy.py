@@ -52,9 +52,9 @@ for i in range(rows):
         else:
             img[i, j] = 1
 rs=changeShape(img, 32, 32)
-print(rs)
-plt.figure("lena")
-plt.imshow(img, cmap='gray')
-plt.axis('off')
-plt.show()
-np.savetxt('2.txt', rs, fmt="%d", delimiter=' ')
+# print(rs)
+# plt.figure("lena")
+# plt.imshow(img, cmap='gray')
+# plt.axis('off')
+# plt.show()
+np.savetxt('2.txt', rs, fmt="%d", delimiter='')
