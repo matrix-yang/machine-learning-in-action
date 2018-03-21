@@ -199,6 +199,24 @@ def handwritingClassTest():
     print ("\nthe total number of errors is: %d" % errorCount)
     print ("\nthe total error rate is: %f" % (errorCount / float(mTest)))
 
+def classifyfigure():
+    # 1. 导入训练数据
+    hwLabels = []
+    trainingFileList = listdir('trainingDigits')  # load the training set
+    m = len(trainingFileList)
+    trainingMat = zeros((m, 1024))
+    # hwLabels存储0～9对应的index位置， trainingMat存放的每个位置对应的图片向量
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]  # take off .txt
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        # 将 32*32的矩阵->1*1024的矩阵
+        trainingMat[i, :] = img2vector('trainingDigits/%s' % fileNameStr)
+
+    vectorUnderTest = img2vector('../toolStudy/PILstudy/2.txt')
+    classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+    print(classifierResult);
 # import matplotlib
 # import matplotlib.pyplot as plt
 # fig = plt.figure()
@@ -212,4 +230,5 @@ def handwritingClassTest():
 #classifyPerson()
 # testVector = img2vector('testDigits/0_13.txt')
 # print(testVector[0,0:32])
-handwritingClassTest()
+#handwritingClassTest()
+classifyfigure()

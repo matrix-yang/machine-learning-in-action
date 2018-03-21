@@ -42,7 +42,7 @@ def changeShape(arr, rr, rc):
     return rm
 
 
-img = np.array(Image.open('fig2.png').convert('L'))
+img = np.array(Image.open('fig21.png').convert('L'))
 
 rows, cols = img.shape
 for i in range(rows):
