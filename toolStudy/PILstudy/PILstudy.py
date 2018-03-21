@@ -41,20 +41,44 @@ def changeShape(arr, rr, rc):
                 rm[i, j] = 0
     return rm
 
+def showLfigure(filename):
+    img = np.array(Image.open(filename).convert('L'))
+    print(img)
+    rows, cols = img.shape
+    for i in range(rows):
+        for j in range(cols):
+            if (img[i, j] <= 75):
+                img[i, j] = 0
+            else:
+                img[i, j] = 1
+    plt.figure(filename)
+    plt.imshow(img, cmap='gray')
+    plt.axis('off')
+    plt.show()
 
-img = np.array(Image.open('fig21.png').convert('L'))
+def convertImg2Txt(filename,rrows,rcols):
+    img = np.array(Image.open(filename).convert('L'))
+    rows, cols = img.shape
+    for i in range(rows):
+        for j in range(cols):
+            if (img[i, j] >= 250):
+                img[i, j] = 0
+            else:
+                img[i, j] = 1
+    rs = changeShape(img, rrows, rcols)
+    np.savetxt(filename+'.txt', rs, fmt="%d", delimiter='')
 
-rows, cols = img.shape
-for i in range(rows):
-    for j in range(cols):
-        if (img[i, j] >= 250):
-            img[i, j] = 0
-        else:
-            img[i, j] = 1
-rs=changeShape(img, 32, 32)
-# print(rs)
-# plt.figure("lena")
-# plt.imshow(img, cmap='gray')
-# plt.axis('off')
-# plt.show()
-np.savetxt('2.txt', rs, fmt="%d", delimiter='')
+def convertLsyImg2Txt(filename,rrows,rcols):
+    img = np.array(Image.open(filename).convert('L'))
+    rows, cols = img.shape
+    for i in range(rows):
+        for j in range(cols):
+            if (img[i, j] <=75):
+                img[i, j] = 0
+            else:
+                img[i, j] = 1
+    rs = changeShape(img, rrows, rcols)
+    np.savetxt(filename+'.txt', rs, fmt="%d", delimiter='')
+# showLfigure('lsy.jpg')
+convertLsyImg2Txt('lsy.jpg',32,64)
+
